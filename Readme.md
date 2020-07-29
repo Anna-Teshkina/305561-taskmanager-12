@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Анна Тёшкина](https://up.htmlacademy.ru/ecmascript/12/user/305561).
-* Наставник: `Неизвестно`.
+* Наставник: [Семён Якушев](https://htmlacademy.ru/profile/id1118791).
 
 ---
 
