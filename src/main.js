@@ -7,6 +7,10 @@ import {createTaskTemplate} from "./view/task.js";
 import {createTaskEditTemplate} from "./view/task-edit.js";
 import {createLoadBtnTemplate} from "./view/load-btn.js";
 
+import {generateTask} from "./mock/task.js";
+
+const tasks = new Array(TASK_COUNT).fill().map(generateTask);
+console.log(tasks);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
