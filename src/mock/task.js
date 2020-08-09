@@ -66,6 +66,14 @@ const generateRepeating = () => {
   };
 };
 
+// Опишем функцию для генерации цвета карточки
+const getRandomColor = () => {
+  const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
+  const randomIndex = getRandomInteger(0, colors.length - 1);
+
+  return colors[randomIndex];
+};
+
 export const generateTask = () => {
 	const dueDate = generateDate();
 
@@ -87,8 +95,8 @@ export const generateTask = () => {
     description: generateDescription(),
     dueDate,
     repeatingDays,
-    color: `black`,
-    isFavorite: false,
-    isArchive: false,
+    color: getRandomColor(),
+    isFavorite: Boolean(getRandomInteger(0, 1)),
+    isArchive: Boolean(getRandomInteger(0, 1)),
   };
 };
