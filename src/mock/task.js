@@ -68,7 +68,20 @@ const generateRepeating = () => {
 
 export const generateTask = () => {
 	const dueDate = generateDate();
-	const repeatingDays = generateRepeating();
+
+	// если дата дедлайна отсутствует, то нужно генерировать дни повторения
+	// в противном случае - не нужно, все дни false
+	const repeatingDays = dueDate === null
+    ? generateRepeating()
+    : {
+      mo: false,
+      tu: false,
+      we: false,
+      th: false,
+      fr: false,
+      sa: false,
+      su: false
+    };
 
   return {
     description: generateDescription(),
