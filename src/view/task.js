@@ -1,12 +1,33 @@
+// функция определяет просрочена ли дата дедлайна
+// если дедлайна нет возвращаем - null
+const isExpired = (dueDate) => {
+  if (dueDate === null) {
+    return false;
+  }
+
+  let currentDate = new Date();
+  currentDate.setHours(23, 59, 59, 999);
+  currentDate = new Date(currentDate);
+
+  return currentDate.getTime() > dueDate.getTime();
+};
+
+
 // шаблон карточки
 export const createTaskTemplate = (task) => {
   const {color, description, dueDate} = task;
 
+  // приводим дату дедлайна к заданному виду
   const date = dueDate !== null
     ? dueDate.toLocaleString(`en-US`, {day: `numeric`, month: `long`})
     : ``;
-    
-  return `<article class="card card--${color}">
+
+  // используем функцию isExpired для добавления класса-модификатора
+  const deadlineClassName = isExpired(dueDate)
+    ? `card--deadline`
+    : ``;
+
+  return `<article class="card card--${color} ${deadlineClassName}">
     <div class="card__form">
       <div class="card__inner">
         <div class="card__control">
