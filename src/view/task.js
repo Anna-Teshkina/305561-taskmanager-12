@@ -12,10 +12,14 @@ const isExpired = (dueDate) => {
   return currentDate.getTime() > dueDate.getTime();
 };
 
+//функция определяет повторяется ли задача
+const isRepeating = (repeatingDays) => {
+  return Object.values(repeatingDays).some(Boolean);
+};
 
 // шаблон карточки
 export const createTaskTemplate = (task) => {
-  const {color, description, dueDate} = task;
+  const {color, description, dueDate, repeatingDays, isArchive, isFavorite} = task;
 
   // приводим дату дедлайна к заданному виду
   const date = dueDate !== null
@@ -27,19 +31,32 @@ export const createTaskTemplate = (task) => {
     ? `card--deadline`
     : ``;
 
-  return `<article class="card card--${color} ${deadlineClassName}">
+  // используем ф-цию isRepeating для добавления класса-модификатора
+  const repeatClassName = isRepeating(repeatingDays)
+    ? `card--repeat`
+    : ``;
+
+  const archiveClassName = isArchive
+    ? `card__btn--archive card__btn--disabled`
+    : `card__btn--archive`;
+
+  const favoriteClassName = isFavorite
+    ? `card__btn--favorites card__btn--disabled`
+    : `card__btn--favorites`;  
+
+  return `<article class="card card--${color} ${deadlineClassName} ${repeatClassName}">
     <div class="card__form">
       <div class="card__inner">
         <div class="card__control">
           <button type="button" class="card__btn card__btn--edit">
             edit
           </button>
-          <button type="button" class="card__btn card__btn--archive">
+          <button type="button" class="card__btn ${archiveClassName}">
             archive
           </button>
           <button
             type="button"
-            class="card__btn card__btn--favorites"
+            class="card__btn ${favoriteClassName}"
           >
             favorites
           </button>
