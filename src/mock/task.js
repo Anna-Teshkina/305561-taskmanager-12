@@ -1,13 +1,8 @@
 // СГЕНЕРИРУЕМ МОКИ ДЛЯ ОПИСАНИЯ НАШИХ ЗАДАЧ
 
-// Функция из интернета по генерации случайного числа из диапазона
-// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
+import {COLORS} from "../const.js";
+import {getRandomInteger} from "../utils.js";
 
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
 
 // генерируем случайное описание для карточки задачи
 const generateDescription = () => {
@@ -68,10 +63,8 @@ const generateRepeating = () => {
 
 // Опишем функцию для генерации цвета карточки
 const getRandomColor = () => {
-  const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
-  const randomIndex = getRandomInteger(0, colors.length - 1);
-
-  return colors[randomIndex];
+  const randomIndex = getRandomInteger(0, COLORS.length - 1);
+  return COLORS[randomIndex];
 };
 
 export const generateTask = () => {

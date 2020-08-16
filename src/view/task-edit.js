@@ -1,22 +1,5 @@
-// функция определяет просрочена ли дата дедлайна
-// если дедлайна нет возвращаем - null
-const isExpired = (dueDate) => {
-  if (dueDate === null) {
-    return false;
-  }
-
-  const currentDate = new Date();
-
-  currentDate.setHours(23, 59, 59, 999);
-
-  return currentDate > dueDate.getTime();
-};
-
-//функция определяет повторяется ли задача
-const isRepeating = (repeatingDays) => {
-  // Object.values(repeating).some(Boolean) ? console.log('Есть повторение') : console.log('Нет повторения');
-  return Object.values(repeatingDays).some(Boolean);
-};
+import {COLORS} from "../const.js";
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils.js";
 
 // если дата дедлайна есть выводим date: yes, в строке ниже указываем дату в заданном формате
 // если дедлайн не задан, выставляем date: no.
@@ -31,7 +14,7 @@ const createTaskEditDateTemplate = (dueDate) => {
           type="text"
           placeholder=""
           name="date"
-          value="${dueDate.toLocaleString(`en-US`, {day: `numeric`, month: `long`})}"
+          value="${humanizeTaskDueDate(dueDate)}"
         />
       </label>
     </fieldset>` : ``}
@@ -42,9 +25,9 @@ const createTaskEditDateTemplate = (dueDate) => {
 // если не повторяется, выводим repeat: no.
 const createTaskEditRepeatingTemplate = (repeatingDays) => {
   return `<button class="card__repeat-toggle" type="button">
-    repeat:<span class="card__repeat-status">${isRepeating(repeatingDays) ? `yes` : `no`}</span>
+    repeat:<span class="card__repeat-status">${isTaskRepeating(repeatingDays) ? `yes` : `no`}</span>
   </button>
-  ${isRepeating(repeatingDays) ? `<fieldset class="card__repeat-days">
+  ${isTaskRepeating(repeatingDays) ? `<fieldset class="card__repeat-days">
     <div class="card__repeat-days-inner">
       ${Object.entries(repeatingDays).map(([day, repeat]) => `<input
         class="visually-hidden card__repeat-day-input"
@@ -63,9 +46,7 @@ const createTaskEditRepeatingTemplate = (repeatingDays) => {
 
 // Вынесем часть шаблона с выбором цвета в отдельную функцию, чтобы не путаться в коде
 const createTaskEditColorsTemplate = (currentColor) => {
-  const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
-
-  return colors.map((color) => `<input
+  return COLORS.map((color) => `<input
     type="radio"
     id="color-${color}"
     class="card__color-input card__color-input--${color} visually-hidden"
@@ -98,7 +79,7 @@ export const createTaskEditTemplate = (task = {}) => {
   } = task;
 
   // используем функцию isExpired для добавления класса-модификатора
-  const deadlineClassName = isExpired(dueDate)
+  const deadlineClassName = isTaskExpired(dueDate)
     ? `card--deadline`
     : ``;
 
@@ -106,7 +87,7 @@ export const createTaskEditTemplate = (task = {}) => {
   const dateTemplate = createTaskEditDateTemplate(dueDate);
 
   // используем ф-цию isRepeating для добавления класса-модификатора
-  const repeatingClassName = isRepeating(repeatingDays)
+  const repeatingClassName = isTaskRepeating(repeatingDays)
     ? `card--repeat`
     : ``;
 

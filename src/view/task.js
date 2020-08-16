@@ -1,21 +1,4 @@
-// функция определяет просрочена ли дата дедлайна
-// если дедлайна нет возвращаем - null
-const isExpired = (dueDate) => {
-  if (dueDate === null) {
-    return false;
-  }
-
-  let currentDate = new Date();
-  currentDate.setHours(23, 59, 59, 999);
-  currentDate = new Date(currentDate);
-
-  return currentDate.getTime() > dueDate.getTime();
-};
-
-//функция определяет повторяется ли задача
-const isRepeating = (repeatingDays) => {
-  return Object.values(repeatingDays).some(Boolean);
-};
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils";
 
 // шаблон карточки
 export const createTaskTemplate = (task) => {
@@ -23,16 +6,16 @@ export const createTaskTemplate = (task) => {
 
   // приводим дату дедлайна к заданному виду
   const date = dueDate !== null
-    ? dueDate.toLocaleString(`en-US`, {day: `numeric`, month: `long`})
+    ? humanizeTaskDueDate(dueDate)
     : ``;
 
   // используем функцию isExpired для добавления класса-модификатора
-  const deadlineClassName = isExpired(dueDate)
+  const deadlineClassName = isTaskExpired(dueDate)
     ? `card--deadline`
     : ``;
 
   // используем ф-цию isRepeating для добавления класса-модификатора
-  const repeatClassName = isRepeating(repeatingDays)
+  const repeatClassName = isTaskRepeating(repeatingDays)
     ? `card--repeat`
     : ``;
 
