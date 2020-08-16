@@ -7,6 +7,16 @@ export const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
+
+// Функция получает текущую дату и устанавливает 
+// время равное концу текущего дня - 23:59:59
+const getCurrentDate = () => {
+  const currentDate = new Date();
+  currentDate.setHours(23, 59, 59, 999);
+
+  return new Date(currentDate);
+};
+
 // функция определяет просрочена ли дата дедлайна
 // если дедлайна нет возвращаем - null
 export const isTaskExpired = (dueDate) => {
@@ -14,11 +24,19 @@ export const isTaskExpired = (dueDate) => {
     return false;
   }
 
-  let currentDate = new Date();
-  currentDate.setHours(23, 59, 59, 999);
-  currentDate = new Date(currentDate);
-
+  const currentDate = getCurrentDate();
   return currentDate.getTime() > dueDate.getTime();
+};
+
+// функция определяет задачи которые истекают сегодня
+export const isTaskExpiringToday = (dueDate) => {
+  if (dueDate === null) {
+    return false;
+  }
+
+  const currentDate = getCurrentDate();
+
+  return currentDate.getTime() === dueDate.getTime();
 };
 
 // функция определяет повторяется ли задача

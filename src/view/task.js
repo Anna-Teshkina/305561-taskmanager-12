@@ -1,4 +1,4 @@
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils";
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils.js";
 
 // шаблон карточки
 export const createTaskTemplate = (task) => {
