@@ -83,7 +83,7 @@ export const createTaskEditTemplate = (task = {}) => {
     ? `card--deadline`
     : ``;
 
-  // формируем шаблон даты дедлайна  
+  // формируем шаблон даты дедлайна
   const dateTemplate = createTaskEditDateTemplate(dueDate);
 
   // используем ф-цию isRepeating для добавления класса-модификатора

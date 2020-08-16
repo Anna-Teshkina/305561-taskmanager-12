@@ -8,7 +8,7 @@ export const getRandomInteger = (a = 0, b = 1) => {
 };
 
 
-// Функция получает текущую дату и устанавливает 
+// Функция получает текущую дату и устанавливает
 // время равное концу текущего дня - 23:59:59
 const getCurrentDate = () => {
   const currentDate = new Date();
