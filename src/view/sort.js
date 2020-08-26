@@ -1,17 +1,21 @@
 import {createElement} from "../utils.js";
 
 // шаблон доски
-const createBoardTemplate = () => {
-  return `<section class="board container"></section>`;
+const createSortTemplate = () => {
+  return `<div class="board__filter-list">
+      <a href="#" class="board__filter">SORT BY DEFAULT</a>
+      <a href="#" class="board__filter">SORT BY DATE up</a>
+      <a href="#" class="board__filter">SORT BY DATE down</a>
+    </div>`;
 };
 
-export default class Board {
+export default class Sort {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createBoardTemplate();
+    return createSortTemplate();
   }
 
   getElement() {
