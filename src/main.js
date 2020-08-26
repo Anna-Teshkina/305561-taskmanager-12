@@ -6,6 +6,7 @@ import SiteFilterView from "./view/site-filter.js";
 import BoardView from "./view/board.js";
 import SortView from "./view/sort.js";
 import TaskListView from "./view/task-list.js";
+import NoTaskView from "./view/no-task.js";
 import TaskView from "./view/task.js";
 import TaskEditView from "./view/task-edit.js";
 import LoadBtnView from "./view/load-btn.js";
@@ -63,36 +64,45 @@ render(siteMainElement, new BoardView().getElement(), RenderPosition.BEFOREEND);
 
 const boardComponent = new BoardView();
 render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
-render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
 
-const taskListComponent = new TaskListView();
-render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
 
-// Ограничим первую отрисовку по минимальному количеству,
-// чтобы не пытаться рисовать 8 задач, если всего 5
-for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  renderTask(taskListComponent.getElement(), tasks[i]);
-}
+// По условию заглушка должна показываться,
+// когда нет задач или все задачи в архиве.
+if (tasks.every((task) => task.isArchive)) {
+  render(boardComponent.getElement(), new NoTaskView().getElement(), RenderPosition.BEFOREEND);
+} else {
+  render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.BEFOREEND);
 
-if (tasks.length > TASK_COUNT_PER_STEP) {
-  let renderedTaskCount = TASK_COUNT_PER_STEP; // счетчик показанных задач
+  const taskListComponent = new TaskListView();
+  render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
 
-  const loadBtnComponent = new LoadBtnView();
-  render(boardComponent.getElement(), loadBtnComponent.getElement(), RenderPosition.BEFOREEND);
+  // Ограничим первую отрисовку по минимальному количеству,
+  // чтобы не пытаться рисовать 8 задач, если всего 5
+  for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
+    renderTask(taskListComponent.getElement(), tasks[i]);
+  }
 
-  // По клику будем допоказывать задачи, опираясь на счётчик
-  loadBtnComponent.getElement().addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    tasks
-      .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => renderTask(taskListComponent.getElement(), task));
+  if (tasks.length > TASK_COUNT_PER_STEP) {
+    let renderedTaskCount = TASK_COUNT_PER_STEP; // счетчик показанных задач
 
-    renderedTaskCount += TASK_COUNT_PER_STEP;
+    const loadBtnComponent = new LoadBtnView();
 
-    // Если показаны все задачи - скроем кнопку
-    if (renderedTaskCount >= tasks.length) {
-      loadBtnComponent.getElement().remove();
-      loadBtnComponent.removeElement();
-    }
-  });
+    render(boardComponent.getElement(), loadBtnComponent.getElement(), RenderPosition.BEFOREEND);
+
+    // По клику будем допоказывать задачи, опираясь на счётчик
+    loadBtnComponent.getElement().addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      tasks
+        .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
+        .forEach((task) => renderTask(taskListComponent.getElement(), task));
+
+      renderedTaskCount += TASK_COUNT_PER_STEP;
+
+      // Если показаны все задачи - скроем кнопку
+      if (renderedTaskCount >= tasks.length) {
+        loadBtnComponent.getElement().remove();
+        loadBtnComponent.removeElement();
+      }
+    });
+  }
 }
