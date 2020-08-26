@@ -1,17 +1,17 @@
 import {createElement} from "../utils.js";
 
-// шаблон кнопки загрузки
-export const createLoadBtnTemplate = () => {
-  return `<button class="load-more" type="button">load more</button>`;
+// шаблон доски
+const createTaskListTemplate = () => {
+  return `<div class="board__tasks"></div>`;
 };
 
-export default class LoadBtn {
+export default class TaskList {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createLoadBtnTemplate();
+    return createTaskListTemplate();
   }
 
   getElement() {
@@ -26,4 +26,3 @@ export default class LoadBtn {
     this._element = null;
   }
 }
-
