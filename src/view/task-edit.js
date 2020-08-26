@@ -1,5 +1,22 @@
 import {COLORS} from "../const.js";
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils.js";
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate, createElement} from "../utils.js";
+
+const BLANK_TASK = {
+  color: COLORS[0],
+  description: ``,
+  dueDate: null,
+  repeating: {
+    mo: false,
+    tu: false,
+    we: false,
+    th: false,
+    fr: false,
+    sa: false,
+    su: false
+  },
+  isArchive: false,
+  isFavorite: false
+};
 
 // если дата дедлайна есть выводим date: yes, в строке ниже указываем дату в заданном формате
 // если дедлайн не задан, выставляем date: no.
@@ -62,22 +79,8 @@ const createTaskEditColorsTemplate = (currentColor) => {
 };
 
 // шаблон редактирования карточки
-export const createTaskEditTemplate = (task = {}) => {
-  const {
-    color = `black`,
-    description = ``,
-    dueDate = null,
-    repeatingDays = {
-      mo: false,
-      tu: false,
-      we: false,
-      th: false,
-      fr: false,
-      sa: false,
-      su: false
-    }
-  } = task;
-
+const createTaskEditTemplate = (task) => {
+  const {color, description, dueDate, repeatingDays} = task;
   // используем функцию isExpired для добавления класса-модификатора
   const deadlineClassName = isTaskExpired(dueDate)
     ? `card--deadline`
@@ -140,3 +143,28 @@ export const createTaskEditTemplate = (task = {}) => {
     </form>
   </article>`;
 };
+
+export default class Task {
+  constructor(task = BLANK_TASK) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskEditTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+
