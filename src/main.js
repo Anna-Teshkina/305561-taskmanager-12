@@ -11,36 +11,34 @@ import {createLoadBtnTemplate} from "./view/load-btn.js";
 import {generateTask} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
 
+import {renderTemplate} from "./utils.js";
+
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 // console.log(tasks);
 const filters = generateFilter(tasks);
 // console.log(filters);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-render(siteHeaderElement, createSiteMenuTemplate(), `beforeend`);
-render(siteMainElement, createSiteFilterTemplate(filters), `beforeend`);
-render(siteMainElement, createBoardTemplate(), `beforeend`);
+renderTemplate(siteHeaderElement, createSiteMenuTemplate(), `beforeend`);
+renderTemplate(siteMainElement, createSiteFilterTemplate(filters), `beforeend`);
+renderTemplate(siteMainElement, createBoardTemplate(), `beforeend`);
 
 const boardElement = siteMainElement.querySelector(`.board`);
 const taskListElement = boardElement.querySelector(`.board__tasks`);
 
-render(taskListElement, createTaskEditTemplate(tasks[0]), `beforeend`);
+renderTemplate(taskListElement, createTaskEditTemplate(tasks[0]), `beforeend`);
 
 // Ограничим первую отрисовку по минимальному количеству,
 // чтобы не пытаться рисовать 8 задач, если всего 5
 for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  render(taskListElement, createTaskTemplate(tasks[i]), `beforeend`);
+  renderTemplate(taskListElement, createTaskTemplate(tasks[i]), `beforeend`);
 }
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
   let renderedTaskCount = TASK_COUNT_PER_STEP; // счетчик показанных задач
-  render(boardElement, createLoadBtnTemplate(), `beforeend`);
+  renderTemplate(boardElement, createLoadBtnTemplate(), `beforeend`);
 
   const loadMoreButton = boardElement.querySelector(`.load-more`);
 
@@ -49,7 +47,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     evt.preventDefault();
     tasks
       .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => render(taskListElement, createTaskTemplate(task), `beforeend`));
+      .forEach((task) => renderTemplate(taskListElement, createTaskTemplate(task), `beforeend`));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
