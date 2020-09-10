@@ -1,8 +1,8 @@
-import BoardView from "./view/board.js";
-import SortView from "./view/sort.js";
-import TaskListView from "./view/task-list.js";
-import NoTaskView from "./view/no-task.js";
-import LoadBtnView from "./view/load-btn.js";
+import BoardView from "../view/board.js";
+import SortView from "../view/sort.js";
+import TaskListView from "../view/task-list.js";
+import NoTaskView from "../view/no-task.js";
+import LoadBtnView from "../view/load-btn.js";
 
 import TaskView from "../view/task.js";
 import TaskEditView from "../view/task-edit.js";
