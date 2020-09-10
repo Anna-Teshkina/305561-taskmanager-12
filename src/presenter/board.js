@@ -108,16 +108,7 @@ export default class Board {
     });
   }
 
-  _renderBoard() {
-    // По условию заглушка должна показываться,
-    // когда нет задач или все задачи в архиве.
-    if (this._boardTasks.every((task) => task.isArchive)) {
-      this._renderNoTasks();
-      return;
-    }
-
-    this._renderSort();
-
+  _renderTaskList() {
     // Ограничим первую отрисовку по минимальному количеству,
     // чтобы не пытаться рисовать 8 задач, если всего 5
     this._renderTasks(0, Math.min(this._boardTasks.length, TASK_COUNT_PER_STEP));
@@ -127,5 +118,17 @@ export default class Board {
     if (this._boardTasks.length > TASK_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
     }
+  }
+
+  _renderBoard() {
+    // По условию заглушка должна показываться,
+    // когда нет задач или все задачи в архиве.
+    if (this._boardTasks.every((task) => task.isArchive)) {
+      this._renderNoTasks();
+      return;
+    }
+
+    this._renderSort();
+    this._renderTaskList();
   }
 }
