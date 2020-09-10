@@ -1,7 +1,7 @@
 // СГЕНЕРИРУЕМ МОКИ ДЛЯ ОПИСАНИЯ НАШИХ ЗАДАЧ
 
 import {COLORS} from "../const.js";
-import {getRandomInteger} from "../utils.js";
+import {getRandomInteger} from "../utils/common.js";
 
 
 // генерируем случайное описание для карточки задачи

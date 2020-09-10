@@ -1,5 +1,5 @@
 import AbstractView from "./abstract.js";
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils.js";
+import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
 
 // шаблон карточки
 const createTaskTemplate = (task) => {

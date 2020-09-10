@@ -11,7 +11,7 @@
 // - Объявим свойство _element
 // - Метод getTemplate тоже объявим, но в качестве реализации будем бросать исключение, чтобы разработчик не забывал его переопределить
 
-import {createElement} from "../utils.js";
+import {createElement} from "../utils/render.js";
 
 export default class Abstract {
   constructor() {
