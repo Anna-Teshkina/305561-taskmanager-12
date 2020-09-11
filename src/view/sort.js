@@ -22,7 +22,7 @@ export default class Sort extends AbstractView {
   }
 
   _sortTypeChangeHandler(evt) {
-  	// Добавим проверку на тег "а", чтобы клики по блоку сортировки не вызывали колбэк
+    // Добавим проверку на тег "а", чтобы клики по блоку сортировки не вызывали колбэк
     if (evt.target.tagName !== `A`) {
       return;
     }
