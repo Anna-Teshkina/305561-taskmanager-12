@@ -56,6 +56,7 @@ const getWeightForNullDate = (dateA, dateB) => {
   return null;
 };
 
+// по возрастанию
 export const sortTaskUp = (taskA, taskB) => {
   const weight = getWeightForNullDate(taskA.dueDate, taskB.dueDate);
 
@@ -66,6 +67,7 @@ export const sortTaskUp = (taskA, taskB) => {
   return taskA.dueDate.getTime() - taskB.dueDate.getTime();
 };
 
+// по убыванию
 export const sortTaskDown = (taskA, taskB) => {
   const weight = getWeightForNullDate(taskA.dueDate, taskB.dueDate);
 

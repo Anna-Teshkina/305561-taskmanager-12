@@ -65,14 +65,20 @@ export default class Board {
   }
 
   _handleSortTypeChange(sortType) {
-    // защита от лишних перерисовок
+    // Защита от лишних перерисовок: если тип сортировки равен текущему,
+    // то перерисовывать не нужно.
     if (this._currentSortType === sortType) {
       return;
     }
 
+    // - Сортируем задачи
     this._sortTasks(sortType);
+
     // - Очищаем список
+    this._clearTaskList();
+
     // - Рендерим список заново
+    this._renderTaskList();
   }
 
   _renderSort() {
@@ -148,6 +154,11 @@ export default class Board {
 
     // По клику будем допоказывать задачи, опираясь на счётчик
     this._loadBtnComponent.setClickHandler(this._handleLoadBtnClick);
+  }
+
+  _clearTaskList() {
+    this._taskListComponent.getElement().innerHTML = ``;
+    this._renderedTaskCount = TASK_COUNT_PER_STEP;
   }
 
   _renderTaskList() {
