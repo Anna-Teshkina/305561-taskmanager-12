@@ -4,10 +4,11 @@ import TaskListView from "../view/task-list.js";
 import NoTaskView from "../view/no-task.js";
 import LoadBtnView from "../view/load-btn.js";
 
-import TaskView from "../view/task.js";
-import TaskEditView from "../view/task-edit.js";
+// import TaskView from "../view/task.js";
+// import TaskEditView from "../view/task-edit.js";
+import TaskPresenter from "./task.js";
 
-import {render, RenderPosition, replace, remove} from "../utils/render.js";
+import {render, RenderPosition, remove} from "../utils/render.js";
 
 import {sortTaskUp, sortTaskDown} from "../utils/task.js";
 import {SortType} from "../const.js";
@@ -88,39 +89,41 @@ export default class Board {
   }
 
   _renderTask(task) {
-    // Метод, куда уйдёт логика созданию и рендерингу компонетов задачи,
-    // текущая функция renderTask в main.js
+    const taskPresenter = new TaskPresenter(this._taskListComponent);
+    taskPresenter.init(task);
+    // // Метод, куда уйдёт логика созданию и рендерингу компонетов задачи,
+    // // текущая функция renderTask в main.js
 
-    const taskComponent = new TaskView(task);
-    const taskEditComponent = new TaskEditView(task);
+    // const taskComponent = new TaskView(task);
+    // const taskEditComponent = new TaskEditView(task);
 
-    const replaceCardToForm = () => {
-      replace(taskEditComponent, taskComponent);
-    };
+    // const replaceCardToForm = () => {
+    //   replace(taskEditComponent, taskComponent);
+    // };
 
-    const replaceFormToCard = () => {
-      replace(taskComponent, taskEditComponent);
-    };
+    // const replaceFormToCard = () => {
+    //   replace(taskComponent, taskEditComponent);
+    // };
 
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        evt.preventDefault();
-        replaceFormToCard();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
+    // const onEscKeyDown = (evt) => {
+    //   if (evt.key === `Escape` || evt.key === `Esc`) {
+    //     evt.preventDefault();
+    //     replaceFormToCard();
+    //     document.removeEventListener(`keydown`, onEscKeyDown);
+    //   }
+    // };
 
-    taskComponent.setEditClickHandler(() => {
-      replaceCardToForm();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
+    // taskComponent.setEditClickHandler(() => {
+    //   replaceCardToForm();
+    //   document.addEventListener(`keydown`, onEscKeyDown);
+    // });
 
-    taskEditComponent.setFormSubmitHandler(() => {
-      replaceFormToCard();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
+    // taskEditComponent.setFormSubmitHandler(() => {
+    //   replaceFormToCard();
+    //   document.removeEventListener(`keydown`, onEscKeyDown);
+    // });
 
-    render(this._taskListComponent, taskComponent, RenderPosition.BEFOREEND);
+    // render(this._taskListComponent, taskComponent, RenderPosition.BEFOREEND);
   }
 
   _renderTasks(from, to) {
