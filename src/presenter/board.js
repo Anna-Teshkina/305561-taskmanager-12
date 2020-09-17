@@ -7,6 +7,7 @@ import LoadBtnView from "../view/load-btn.js";
 // import TaskView from "../view/task.js";
 // import TaskEditView from "../view/task-edit.js";
 import TaskPresenter from "./task.js";
+import {updateItem} from "../utils/common.js";
 
 import {render, RenderPosition, remove} from "../utils/render.js";
 
@@ -28,6 +29,7 @@ export default class Board {
     this._noTaskComponent = new NoTaskView();
     this._loadBtnComponent = new LoadBtnView();
 
+    this._handleTaskChange = this._handleTaskChange.bind(this);
     this._handleLoadBtnClick = this._handleLoadBtnClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
@@ -43,6 +45,12 @@ export default class Board {
     render(this._boardComponent, this._taskListComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
+  }
+
+  _handleTaskChange(updatedTask) {
+    this._boardTasks = updateItem(this._boardTasks, updatedTask);
+    this._sourcedBoardTasks = updateItem(this._sourcedBoardTasks, updatedTask);
+    this._taskPresenter[updatedTask.id].init(updatedTask);
   }
 
   // switch-блок с функциями сортировки:
