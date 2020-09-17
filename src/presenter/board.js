@@ -20,6 +20,7 @@ export default class Board {
     this._boardContainer = boardContainer;
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
+    this._taskPresenter = {}; // хранит ссылки на все Task-презентеры
 
     this._boardComponent = new BoardView();
     this._sortComponent = new SortView();
@@ -91,39 +92,7 @@ export default class Board {
   _renderTask(task) {
     const taskPresenter = new TaskPresenter(this._taskListComponent);
     taskPresenter.init(task);
-    // // Метод, куда уйдёт логика созданию и рендерингу компонетов задачи,
-    // // текущая функция renderTask в main.js
-
-    // const taskComponent = new TaskView(task);
-    // const taskEditComponent = new TaskEditView(task);
-
-    // const replaceCardToForm = () => {
-    //   replace(taskEditComponent, taskComponent);
-    // };
-
-    // const replaceFormToCard = () => {
-    //   replace(taskComponent, taskEditComponent);
-    // };
-
-    // const onEscKeyDown = (evt) => {
-    //   if (evt.key === `Escape` || evt.key === `Esc`) {
-    //     evt.preventDefault();
-    //     replaceFormToCard();
-    //     document.removeEventListener(`keydown`, onEscKeyDown);
-    //   }
-    // };
-
-    // taskComponent.setEditClickHandler(() => {
-    //   replaceCardToForm();
-    //   document.addEventListener(`keydown`, onEscKeyDown);
-    // });
-
-    // taskEditComponent.setFormSubmitHandler(() => {
-    //   replaceFormToCard();
-    //   document.removeEventListener(`keydown`, onEscKeyDown);
-    // });
-
-    // render(this._taskListComponent, taskComponent, RenderPosition.BEFOREEND);
+    this._taskPresenter[task.id] = taskPresenter;
   }
 
   _renderTasks(from, to) {
@@ -160,7 +129,11 @@ export default class Board {
   }
 
   _clearTaskList() {
-    this._taskListComponent.getElement().innerHTML = ``;
+    Object
+      .values(this._taskPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._taskPresenter = {};
+    // this._taskListComponent.getElement().innerHTML = ``;
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
   }
 
