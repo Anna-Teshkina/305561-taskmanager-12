@@ -6,7 +6,7 @@ const BLANK_TASK = {
   color: COLORS[0],
   description: ``,
   dueDate: null,
-  repeating: {
+  repeatingDays: {
     mo: false,
     tu: false,
     we: false,
@@ -149,7 +149,18 @@ export default class TaskEdit extends AbstractView {
   constructor(task = BLANK_TASK) {
     super();
     this._data = TaskEdit.parseTaskToData(task);
+
+    this._dueDateToggleHandler = this._dueDateToggleHandler.bind(this);
+    this._repeatingToggleHandler = this._repeatingToggleHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+
+    this.getElement()
+      .querySelector(`.card__date-deadline-toggle`)
+      .addEventListener(`click`, this._dueDateToggleHandler);
+
+    this.getElement()
+      .querySelector(`.card__repeat-toggle`)
+      .addEventListener(`click`, this._repeatingToggleHandler);
   }
 
   getTemplate() {
@@ -181,6 +192,20 @@ export default class TaskEdit extends AbstractView {
     prevElement = null; // Чтобы окончательно "убить" ссылку на prevElement
   }
 
+  _dueDateToggleHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      isDueDate: !this._data.isDueDate
+    });
+  }
+
+  _repeatingToggleHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      isRepeating: !this._data.isRepeating
+    });
+  }
+
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit(TaskEdit.parseDataToTask(this._data));
@@ -210,7 +235,7 @@ export default class TaskEdit extends AbstractView {
     }
 
     if (!data.isRepeating) {
-      data.repeating = {
+      data.repeatingDays = {
         mo: false,
         tu: false,
         we: false,
