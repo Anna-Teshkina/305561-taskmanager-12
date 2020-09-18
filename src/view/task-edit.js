@@ -32,7 +32,7 @@ const createTaskEditDateTemplate = (dueDate, isDueDate) => {
           type="text"
           placeholder=""
           name="date"
-          value="${humanizeTaskDueDate(dueDate)}"
+          value="${dueDate !== null ? humanizeTaskDueDate(dueDate) : ``}"
         />
       </label>
     </fieldset>` : ``}
@@ -154,13 +154,7 @@ export default class TaskEdit extends AbstractView {
     this._repeatingToggleHandler = this._repeatingToggleHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
 
-    this.getElement()
-      .querySelector(`.card__date-deadline-toggle`)
-      .addEventListener(`click`, this._dueDateToggleHandler);
-
-    this.getElement()
-      .querySelector(`.card__repeat-toggle`)
-      .addEventListener(`click`, this._repeatingToggleHandler);
+    this._setInnerHandlers();
   }
 
   getTemplate() {
@@ -190,6 +184,24 @@ export default class TaskEdit extends AbstractView {
 
     parent.replaceChild(newElement, prevElement);
     prevElement = null; // Чтобы окончательно "убить" ссылку на prevElement
+
+    this.restoreHandlers();
+  }
+
+  // восстанавливаем обработчики внутренние и внешние
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
+  // внутренние обработчики объекта который перерисовывается
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector(`.card__date-deadline-toggle`)
+      .addEventListener(`click`, this._dueDateToggleHandler);
+    this.getElement()
+      .querySelector(`.card__repeat-toggle`)
+      .addEventListener(`click`, this._repeatingToggleHandler);
   }
 
   _dueDateToggleHandler(evt) {
