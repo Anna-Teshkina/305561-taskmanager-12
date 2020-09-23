@@ -40,6 +40,7 @@ export default class Smart extends AbstractView {
   // восстанавливаем обработчики внутренние и внешние
   restoreHandlers() {
     this._setInnerHandlers();
+    this._setDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
 }

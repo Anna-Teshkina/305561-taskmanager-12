@@ -1,7 +1,7 @@
 import SmartView from "./smart.js";
 import {COLORS} from "../const.js";
 // import AbstractView from "./abstract.js";
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
+import {isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
 import flatpickr from "flatpickr";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
@@ -86,10 +86,6 @@ const createTaskEditColorsTemplate = (currentColor) => {
 // шаблон редактирования карточки
 const createTaskEditTemplate = (data) => {
   const {color, description, dueDate, repeatingDays, isDueDate, isRepeating} = data;
-  // используем функцию isExpired для добавления класса-модификатора
-  const deadlineClassName = isTaskExpired(dueDate)
-    ? `card--deadline`
-    : ``;
 
   // формируем шаблон даты дедлайна
   const dateTemplate = createTaskEditDateTemplate(dueDate, isDueDate);
@@ -106,9 +102,9 @@ const createTaskEditTemplate = (data) => {
   const colorsTemplate = createTaskEditColorsTemplate(color);
 
   // переменная которая будет блокировать кнопку сохранить, если не выбраны дни повторения
-  const isSubmitDisabled = isRepeating && !isTaskRepeating(repeatingDays);
+  const isSubmitDisabled = (isDueDate && dueDate === null) || (isRepeating && !isTaskRepeating(repeatingDays));
 
-  return `<article class="card card--edit card--${color} ${deadlineClassName} ${repeatingClassName}">
+  return `<article class="card card--edit card--${color} ${repeatingClassName}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__color-bar">
@@ -169,6 +165,7 @@ export default class TaskEdit extends SmartView {
     this._colorChangeHandler = this._colorChangeHandler.bind(this);
 
     this._setInnerHandlers();
+    this._setDatepicker();
   }
 
   reset(task) {
