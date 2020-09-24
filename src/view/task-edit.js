@@ -212,6 +212,13 @@ export default class TaskEdit extends SmartView {
     });
   }
 
+  // восстанавливаем обработчики внутренние и внешние
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this._setDatepicker();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
   // внутренние обработчики объекта который перерисовывается
   _setInnerHandlers() {
     this.getElement()
