@@ -1,3 +1,5 @@
+import moment from "moment";
+
 // Функция получает текущую дату и устанавливает
 // время равное концу текущего дня - 23:59:59
 const getCurrentDate = () => {
@@ -34,8 +36,15 @@ export const isTaskRepeating = (repeatingDays) => {
   return Object.values(repeatingDays).some(Boolean);
 };
 
-export const humanizeTaskDueDate = (dueDate) => {
-  return dueDate.toLocaleString(`en-US`, {day: `numeric`, month: `long`});
+// export const humanizeTaskDueDate = (dueDate) => {
+//   return dueDate.toLocaleString(`en-US`, {day: `numeric`, month: `long`});
+// };
+
+export const formatTaskDueDate = (dueDate) => {
+  if (!(dueDate instanceof Date)) {
+    return ``;
+  }
+  return moment(dueDate).format(`D MMMM`);
 };
 
 // Функция помещает задачи без даты в конце списка,
